@@ -54,8 +54,20 @@ local ninjaThrow = function( event )
     ninja:play()
 end 
 
-local checkPlayerKunaisOutOfBounds = function ( event )
-    -- body
+local function checkPlayerKunaisOutOfBounds( event )
+        -- check if any kunais have gone off the screen
+    local kunaisCounter
+
+    if #playerKunais > 0 then
+        for kunaisCounter = #playerKunais, 1 , -1 do
+            if playerKunais[kunaisCounter].x > display.contentWidth * 2 then
+                playerKunais[kunaisCounter]:removeSelf()
+                playerKunais[kunaisCounter] = nil
+                table.remove(playerKunais, kunaisCounter)
+                print("remove kunais")
+            end
+        end
+    end
 end
 
 
@@ -114,7 +126,7 @@ local function onShootButtonTouch( event )
             aSingleKunai:setLinearVelocity( 1500, 0 )
 
             table.insert(playerKunais, aSingleKunai)
-            print("# of bullet: " .. tostring(#playerKunais))
+            print("# of kunais: " .. tostring(#playerKunais))
         end
 
     elseif ( event.phase == "ended" ) then
